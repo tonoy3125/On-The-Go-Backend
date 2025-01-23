@@ -2,11 +2,9 @@ import express, { Application } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
-import globalErrorHandler from "./app/middlewares/globalErrorHandler";
-
-
-import NotFound from "./app/errors/notFound";
 import { routes } from "./app/routes";
+import globalErrorHandler from "./app/middlewares/globalErrorHandler";
+import NotFound from "./app/errors/notFound";
 
 const app: Application = express();
 // const port = 3000

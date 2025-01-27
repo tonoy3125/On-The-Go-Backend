@@ -107,7 +107,7 @@ export const sendEmail = async (to: string, resetLink: string) => {
   await transporter.sendMail({
     from: 'shaifshajedt@gmail.com',
     to,
-    subject: 'Reset Your Password - Car Wash Service',
+    subject: 'Reset Your Password - On The Go',
     text: `Hello! We received a request to reset your password. Click the link to reset it: ${resetLink}`,
     html,
   })

@@ -10,4 +10,6 @@ router.get('/', CategoryControllers.getAllCategory)
 
 router.get('/:name', CategoryControllers.getAllCategoryByName)
 
+router.delete('/:id', auth('admin'), CategoryControllers.deleteCategory)
+
 export const CategoryRoutes = router

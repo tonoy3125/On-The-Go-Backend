@@ -1,7 +1,9 @@
 import QueryBuilder from '../../builder/QueryBuilder'
+import { AppError } from '../../errors/AppError'
 import { categorySearchableField } from './category.constant'
 import { TCategory } from './category.interface'
 import { Category } from './category.model'
+import httpStatus from 'http-status'
 
 const createCategoryInDB = async (payload: TCategory) => {
   const result = await Category.create(payload)
@@ -39,8 +41,20 @@ const getCategoryNameFromDB = async (name: string) => {
   return result
 }
 
+const deleteCategoryFromDB = async (id: string) => {
+  const category = await Category.findById(id)
+
+  if (!category) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Category Not Found by this ID')
+  }
+
+  const result = await Category.findByIdAndDelete(id)
+  return result
+}
+
 export const CategoryServices = {
   createCategoryInDB,
   getCategoryFromDB,
   getCategoryNameFromDB,
+  deleteCategoryFromDB,
 }

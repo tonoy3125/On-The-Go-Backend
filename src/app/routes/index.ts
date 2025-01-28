@@ -2,6 +2,8 @@ import express from 'express'
 import { UserRoutes } from '../modules/user/user.route'
 import { AuthRoutes } from '../modules/auth/auth.route'
 import { CategoryRoutes } from '../modules/category/category.route'
+import { GroupRoutes } from '../modules/group/group.route'
+import { GroupMemberRoutes } from '../modules/groupMember/groupMember.route'
 
 const router = express.Router()
 
@@ -17,6 +19,14 @@ const routerModules = [
   {
     path: '/category',
     route: CategoryRoutes,
+  },
+  {
+    path: '/group',
+    route: GroupRoutes,
+  },
+  {
+    path: '/group-member',
+    route: GroupMemberRoutes,
   },
 ]
 

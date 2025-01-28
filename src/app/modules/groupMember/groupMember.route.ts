@@ -10,4 +10,10 @@ router.post(
   GroupMemberControllers.joinGroup,
 )
 
+router.get(
+  '/:groupId',
+  auth('admin', 'user'),
+  GroupMemberControllers.getGroupMembers,
+)
+
 export const GroupMemberRoutes = router

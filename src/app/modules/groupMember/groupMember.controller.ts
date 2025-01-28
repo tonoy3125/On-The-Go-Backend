@@ -32,7 +32,20 @@ const getGroupMembers = catchAsync(async (req, res) => {
   })
 })
 
+const leaveGroup = catchAsync(async (req, res) => {
+  const userId = req.user!._id
+  const groupId = req.params.groupId
+  const result = await GroupMemberServices.joinGroupIntoDB(userId, groupId)
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Group Left Successfully',
+    data: result,
+  })
+})
+
 export const GroupMemberControllers = {
   joinGroup,
   getGroupMembers,
+  leaveGroup,
 }

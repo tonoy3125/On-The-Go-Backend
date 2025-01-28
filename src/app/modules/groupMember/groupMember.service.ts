@@ -56,7 +56,20 @@ const getGroupMembersFromDB = async (
   }
 }
 
+const leaveGroupIntoDB = async (userId: string, groupId: string) => {
+  const isMember = await GroupMember.findOne({
+    user: userId,
+    group: groupId,
+  })
+  if (!isMember) {
+    throw new AppError(400, 'You are not a member of this group')
+  }
+  const result = await GroupMember.findByIdAndDelete(isMember._id)
+  return result
+}
+
 export const GroupMemberServices = {
   joinGroupIntoDB,
   getGroupMembersFromDB,
+  leaveGroupIntoDB,
 }

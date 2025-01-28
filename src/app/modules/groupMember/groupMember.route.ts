@@ -16,4 +16,10 @@ router.get(
   GroupMemberControllers.getGroupMembers,
 )
 
+router.post(
+  '/leave-group/:groupId',
+  auth('admin', 'user'),
+  GroupMemberControllers.leaveGroup,
+)
+
 export const GroupMemberRoutes = router

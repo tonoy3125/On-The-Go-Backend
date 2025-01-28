@@ -3,7 +3,7 @@ import { TCategory } from './category.interface'
 
 const categorySchema = new Schema(
   {
-    label: {
+    name: {
       type: String,
       required: true,
       trim: true,

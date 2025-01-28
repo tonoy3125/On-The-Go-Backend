@@ -1,1 +1,1 @@
-export const categorySearchableField = ['label']
+export const categorySearchableField = ['name']

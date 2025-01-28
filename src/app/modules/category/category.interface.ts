@@ -1,3 +1,3 @@
 export type TCategory = {
-  label: string
+  name: string
 }

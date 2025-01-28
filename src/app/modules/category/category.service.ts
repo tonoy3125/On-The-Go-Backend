@@ -25,7 +25,22 @@ const getCategoryFromDB = async (query: Record<string, unknown>) => {
   }
 }
 
+const getCategoryNameFromDB = async (name: string) => {
+  const model = Category.find()
+
+  // Build the query with filters, search, sorting, and pagination
+  const categoryQuery = new QueryBuilder(model, { searchTerm: name }).search(
+    categorySearchableField,
+  )
+
+  // Fetch the metadata and results
+  const result = await categoryQuery.modelQuery
+
+  return result
+}
+
 export const CategoryServices = {
   createCategoryInDB,
   getCategoryFromDB,
+  getCategoryNameFromDB,
 }

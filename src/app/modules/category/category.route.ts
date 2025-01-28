@@ -8,4 +8,6 @@ router.post('/', auth('admin'), CategoryControllers.createCategory)
 
 router.get('/', CategoryControllers.getAllCategory)
 
+router.get('/:name', CategoryControllers.getAllCategoryByName)
+
 export const CategoryRoutes = router

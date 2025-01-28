@@ -6,4 +6,6 @@ const router = express.Router()
 
 router.post('/', auth('admin'), CategoryControllers.createCategory)
 
+router.get('/', CategoryControllers.getAllCategory)
+
 export const CategoryRoutes = router

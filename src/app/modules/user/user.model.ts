@@ -30,6 +30,10 @@ const userSchema = new Schema<TUser>(
       type: String,
       enum: ['user', 'admin'],
     },
+    isPremium: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

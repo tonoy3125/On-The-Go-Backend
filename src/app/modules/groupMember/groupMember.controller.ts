@@ -19,8 +19,8 @@ const getGroupMembers = catchAsync(async (req, res) => {
   const userId = req.user!._id
   const groupId = req.params.groupId
   const result = await GroupMemberServices.getGroupMembersFromDB(
-    userId,
     groupId,
+    userId,
     req.query,
   )
   sendResponse(res, {

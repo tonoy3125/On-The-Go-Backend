@@ -56,7 +56,7 @@ const getGroupMembersFromDB = async (
   }
 }
 
-const leaveGroupIntoDB = async (userId: string, groupId: string) => {
+const leaveGroupIntoDB = async (groupId: string, userId: string) => {
   const isMember = await GroupMember.findOne({
     user: userId,
     group: groupId,

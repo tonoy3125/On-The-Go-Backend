@@ -5,6 +5,7 @@ declare global {
     interface Request {
       user?: {
         _id: User['_id'] // or replace with appropriate type
+        isPremium: boolean
         email: string
         role: string // adjust based on your user role type
       }

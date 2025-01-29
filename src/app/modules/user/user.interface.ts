@@ -10,6 +10,7 @@ export type TUser = {
   phone: number
   role: TUserRoles
   image?: string
+  isPremium: boolean
 }
 
 export interface UserModel extends Model<TUser> {

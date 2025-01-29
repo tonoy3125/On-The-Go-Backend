@@ -34,6 +34,7 @@ const auth = (...requiredRoles: TUserRoles[]) => {
       }
       req.user = {
         _id: user._id,
+        isPremium: user?.isPremium,
         email,
         role,
       }

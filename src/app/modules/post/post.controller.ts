@@ -4,6 +4,34 @@ import httpStatus from 'http-status'
 import { PostServices } from './post.service'
 import { TPost } from './post.interface'
 
+export const uploadPostImage = catchAsync(async (req, res) => {
+  const file = req.file
+  if (!file) {
+    return sendResponse(res, {
+      message: 'file not found',
+      success: false,
+      data: null,
+      statusCode: 404,
+    })
+  }
+  const url = file.path as string
+  if (!url) {
+    return sendResponse(res, {
+      message: 'failed to upload image',
+      success: false,
+      data: null,
+      statusCode: 400,
+    })
+  }
+
+  sendResponse(res, {
+    message: 'Image Uploaded Successfully',
+    success: true,
+    data: url,
+    statusCode: 200,
+  })
+})
+
 const CreatePost = catchAsync(async (req, res) => {
   const { content, categories, images, premium, group } = req.body
   const userId = req.user!._id
@@ -39,4 +67,5 @@ const CreatePost = catchAsync(async (req, res) => {
 
 export const PostControllers = {
   CreatePost,
+  uploadPostImage,
 }

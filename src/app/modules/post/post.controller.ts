@@ -5,6 +5,7 @@ import { PostServices } from './post.service'
 import { TPost } from './post.interface'
 
 export const uploadPostImage = catchAsync(async (req, res) => {
+  console.log('Received File:', req.file)
   const file = req.file
   if (!file) {
     return sendResponse(res, {
@@ -14,6 +15,7 @@ export const uploadPostImage = catchAsync(async (req, res) => {
       statusCode: 404,
     })
   }
+  console.log('Uploaded File Path:', file.path)
   const url = file.path as string
   if (!url) {
     return sendResponse(res, {

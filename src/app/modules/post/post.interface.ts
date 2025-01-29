@@ -1,10 +1,13 @@
+import { Types } from 'mongoose'
+
 export type TPost = {
   content: string
   images: string[]
-  categories: string
+  categories: Types.ObjectId[]
   premium: boolean
-  user: string
+  user: Types.ObjectId
   group?: string
+  reactionCount: number
   upvoteCount: number
   downvoteCount: number
   commentCount: number

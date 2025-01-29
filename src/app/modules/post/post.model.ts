@@ -1,7 +1,7 @@
-import mongoose, { model, Schema, Types } from 'mongoose'
+import { model, Schema } from 'mongoose'
 import { TPost } from './post.interface'
 
-const postSchema = new Schema(
+const postSchema = new Schema<TPost>(
   {
     content: {
       type: String,
@@ -11,17 +11,17 @@ const postSchema = new Schema(
       type: [String],
     },
     categories: {
-      type: [Types.ObjectId],
+      type: [Schema.Types.ObjectId],
       required: true,
       ref: 'Category',
     },
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
     group: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Group',
       required: false,
     },

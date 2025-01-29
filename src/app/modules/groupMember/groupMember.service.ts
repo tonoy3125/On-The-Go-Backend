@@ -64,6 +64,9 @@ const leaveGroupIntoDB = async (userId: string, groupId: string) => {
   if (!isMember) {
     throw new AppError(400, 'You are not a member of this group')
   }
+
+  await Group.findByIdAndUpdate(groupId, { $inc: { memberCount: -1 } })
+
   const result = await GroupMember.findByIdAndDelete(isMember._id)
   return result
 }

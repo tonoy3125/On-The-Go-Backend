@@ -35,7 +35,7 @@ const getGroupMembers = catchAsync(async (req, res) => {
 const leaveGroup = catchAsync(async (req, res) => {
   const userId = req.user!._id
   const groupId = req.params.groupId
-  const result = await GroupMemberServices.joinGroupIntoDB(userId, groupId)
+  const result = await GroupMemberServices.leaveGroupIntoDB(userId, groupId)
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,

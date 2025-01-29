@@ -1,7 +1,9 @@
+import { Types } from 'mongoose'
+
 export type TReactionType = 'like' | 'love' | 'haha' | 'wow' | 'sad' | 'angry'
 
 export type TReaction = {
   reactionId: TReactionType
-  post: string
-  user: string
+  post: Types.ObjectId
+  user: Types.ObjectId
 }

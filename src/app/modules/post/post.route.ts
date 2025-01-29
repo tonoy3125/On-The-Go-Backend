@@ -20,4 +20,6 @@ router.post(
   PostControllers.uploadPostImage,
 )
 
+router.delete('/:id', auth('admin', 'user'), PostControllers.deletePost)
+
 export const PostRoutes = router

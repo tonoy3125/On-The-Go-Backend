@@ -4,6 +4,7 @@ import { USER_ROLE } from './user.constant'
 export type TUserRoles = keyof typeof USER_ROLE
 
 export type TUser = {
+  _id: string
   name: string
   email: string
   password: string

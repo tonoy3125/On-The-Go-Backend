@@ -1,15 +1,16 @@
-import { model, Schema, Types } from 'mongoose'
+import { model, Schema } from 'mongoose'
+import { TGroupMember } from './groupMember.interface'
 
-const groupMemberSchema = new Schema(
+const groupMemberSchema = new Schema<TGroupMember>(
   {
     user: {
-      type: Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: 'User',
     },
 
     group: {
-      type: Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: 'Group',
     },
@@ -23,4 +24,4 @@ const groupMemberSchema = new Schema(
   { timestamps: true },
 )
 
-export const GroupMember = model('GroupMember', groupMemberSchema)
+export const GroupMember = model<TGroupMember>('GroupMember', groupMemberSchema)

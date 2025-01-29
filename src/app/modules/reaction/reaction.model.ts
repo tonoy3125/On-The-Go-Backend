@@ -3,7 +3,7 @@ import { TReaction } from './reaction.interface'
 
 const reactionSchema = new Schema<TReaction>(
   {
-    reactionId: {
+    reaction: {
       type: String,
       enum: ['like', 'love', 'haha', 'wow', 'sad', 'angry'],
       required: true,

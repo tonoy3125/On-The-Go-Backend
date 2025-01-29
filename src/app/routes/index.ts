@@ -5,6 +5,7 @@ import { CategoryRoutes } from '../modules/category/category.route'
 import { GroupRoutes } from '../modules/group/group.route'
 import { GroupMemberRoutes } from '../modules/groupMember/groupMember.route'
 import { PostRoutes } from '../modules/post/post.route'
+import { ReactionRoutes } from '../modules/reaction/reaction.route'
 
 const router = express.Router()
 
@@ -32,6 +33,10 @@ const routerModules = [
   {
     path: '/post',
     route: PostRoutes,
+  },
+  {
+    path: '/reaction',
+    route: ReactionRoutes,
   },
 ]
 

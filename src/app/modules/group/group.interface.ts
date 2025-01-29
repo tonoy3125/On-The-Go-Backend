@@ -1,3 +1,5 @@
+import { Types } from 'mongoose'
+
 export type GroupPrivacy = 'public' | 'private'
 
 export type TGroup = {
@@ -5,4 +7,6 @@ export type TGroup = {
   description: string
   image: string
   privacy: GroupPrivacy
+  memberCount: number
+  GroupOwner: Types.ObjectId
 }

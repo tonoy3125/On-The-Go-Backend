@@ -1,7 +1,7 @@
-import { model, Schema, Types } from 'mongoose'
+import { model, Schema } from 'mongoose'
 import { TGroup } from './group.interface'
 
-const groupSchema = new Schema(
+const groupSchema = new Schema<TGroup>(
   {
     name: {
       type: String,
@@ -27,7 +27,7 @@ const groupSchema = new Schema(
       required: true,
     },
     GroupOwner: {
-      type: Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: true,
       ref: 'User',
     },

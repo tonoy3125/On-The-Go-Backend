@@ -6,6 +6,7 @@ import { GroupRoutes } from '../modules/group/group.route'
 import { GroupMemberRoutes } from '../modules/groupMember/groupMember.route'
 import { PostRoutes } from '../modules/post/post.route'
 import { ReactionRoutes } from '../modules/reaction/reaction.route'
+import { FollowerRoutes } from '../modules/follower/follower.route'
 
 const router = express.Router()
 
@@ -37,6 +38,10 @@ const routerModules = [
   {
     path: '/reaction',
     route: ReactionRoutes,
+  },
+  {
+    path: '/follower',
+    route: FollowerRoutes,
   },
 ]
 

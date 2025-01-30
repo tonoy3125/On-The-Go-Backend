@@ -11,6 +11,11 @@ router.post(
 )
 router.put('/delete', auth('admin', 'user'), FollowerControllers.deleteFollower)
 
-router.get('/following/get', auth('admin', 'user'), FollowerControllers.getAllFollowing)
+router.get(
+  '/following/get',
+  auth('admin', 'user'),
+  FollowerControllers.getAllFollowing,
+)
+router.get('/get', auth('admin', 'user'), FollowerControllers.getAllFollower)
 
 export const FollowerRoutes = router

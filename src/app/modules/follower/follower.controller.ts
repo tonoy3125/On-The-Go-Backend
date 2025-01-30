@@ -52,8 +52,21 @@ const getAllFollowing = catchAsync(async (req, res) => {
   })
 })
 
+const getAllFollower = catchAsync(async (req, res) => {
+  const userId = req.user!._id
+  const result = await FollowerServices.getAllFollowerFromDB(userId, req?.query)
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Follower Retrieved Successfully!',
+    meta: result.meta,
+    data: result.result,
+  })
+})
+
 export const FollowerControllers = {
   createFollower,
   deleteFollower,
   getAllFollowing,
+  getAllFollower,
 }

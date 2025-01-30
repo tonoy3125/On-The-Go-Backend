@@ -105,4 +105,5 @@ export const FollowerServices = {
   createFollowerIntoDB,
   deleteFollowerIntoDB,
   getAllFollowingFromDB,
+  getAllFollowerFromDB,
 }

@@ -33,6 +33,32 @@ const createFollowerIntoDB = async (payload: TFollower) => {
   return result
 }
 
+const deleteFollowerIntoDB = async (payload: TFollower) => {
+  const isFollowingExist = await User.findOne({ _id: payload.following })
+  if (!isFollowingExist) {
+    throw new AppError(404, 'Following User not found')
+  }
+  const isFollowerExist = await User.findOne({ _id: payload.follower })
+  if (!isFollowerExist) {
+    throw new AppError(404, 'Follower not found')
+  }
+
+  const isFollowing = await Follower.findOne({
+    following: isFollowingExist._id,
+    follower: isFollowerExist._id,
+  })
+  if (!isFollowing) {
+    throw new AppError(404, 'Following not found')
+  }
+
+  const result = await Follower.deleteOne({
+    following: isFollowingExist._id,
+    follower: isFollowerExist._id,
+  })
+  return result
+}
+
 export const FollowerServices = {
   createFollowerIntoDB,
+  deleteFollowerIntoDB,
 }

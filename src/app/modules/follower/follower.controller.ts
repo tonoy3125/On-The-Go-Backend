@@ -20,6 +20,8 @@ const createFollower = catchAsync(async (req, res) => {
   })
 })
 
+
+
 export const FollowerControllers = {
   createFollower,
 }

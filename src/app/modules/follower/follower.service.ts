@@ -1,3 +1,4 @@
+import QueryBuilder from '../../builder/QueryBuilder'
 import { AppError } from '../../errors/AppError'
 import { User } from '../user/user.model'
 import { TFollower } from './follower.interface'
@@ -58,7 +59,28 @@ const deleteFollowerIntoDB = async (payload: TFollower) => {
   return result
 }
 
+const getFollowingFromDB = async (
+  following: string,
+  query: Record<string, unknown>,
+) => {
+  const model = Follower.find({ following: following })
+    .populate('user')
+    .populate('follower')
+    .sort('-createdAt')
+
+  const categoryQuery = new QueryBuilder(model, query).sort().paginate()
+
+  const meta = await categoryQuery.countTotal()
+  const result = await categoryQuery.modelQuery
+
+  return {
+    meta,
+    result,
+  }
+}
+
 export const FollowerServices = {
   createFollowerIntoDB,
   deleteFollowerIntoDB,
+  getFollowingFromDB,
 }

@@ -1,6 +1,6 @@
 import { Types } from 'mongoose'
 
 export type TFollower = {
-  user: Types.ObjectId
+  following: Types.ObjectId
   follower: Types.ObjectId
 }

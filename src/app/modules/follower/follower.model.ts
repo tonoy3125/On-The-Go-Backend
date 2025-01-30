@@ -3,7 +3,7 @@ import { TFollower } from './follower.interface'
 
 const followerSchema = new Schema<TFollower>(
   {
-    user: {
+    following: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: 'User',

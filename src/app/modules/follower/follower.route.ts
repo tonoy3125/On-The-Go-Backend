@@ -4,6 +4,6 @@ import auth from '../../middlewares/auth'
 
 const router = express.Router()
 
-router.post('/', auth('admin', 'user'), FollowerControllers.createFollower)
+router.post('/create', auth('admin', 'user'), FollowerControllers.createFollower)
 
 export const FollowerRoutes = router

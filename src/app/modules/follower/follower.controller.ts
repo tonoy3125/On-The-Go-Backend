@@ -7,7 +7,7 @@ const createFollower = catchAsync(async (req, res) => {
   const userId = req.user!._id
   const { follower } = req.body
   const payload = {
-    user: follower,
+    following: follower,
     follower: userId,
   }
   const result = await FollowerServices.createFollowerIntoDB(payload)

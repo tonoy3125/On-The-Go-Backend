@@ -5,8 +5,8 @@ import { Follower } from './follower.model'
 
 const createFollowerIntoDB = async (payload: TFollower) => {
   // whom to follow
-  const isUserExist = await User.findOne({ _id: payload.user })
-  if (!isUserExist) {
+  const isFollowingExist = await User.findOne({ _id: payload.following })
+  if (!isFollowingExist) {
     throw new AppError(404, 'User not found')
   }
 
@@ -18,12 +18,12 @@ const createFollowerIntoDB = async (payload: TFollower) => {
   }
 
   const isFollowing = await Follower.findOne({
-    user: isUserExist._id,
+    following: isFollowingExist._id,
     follower: isFollowerExist._id,
   })
   if (isFollowing) {
     const result = await Follower.deleteOne({
-      user: isUserExist._id,
+      following: isFollowingExist._id,
       follower: isFollowerExist._id,
     })
     return result

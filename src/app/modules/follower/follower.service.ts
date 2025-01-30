@@ -59,19 +59,20 @@ const deleteFollowerIntoDB = async (payload: TFollower) => {
   return result
 }
 
-const getFollowingFromDB = async (
-  following: string,
+const getAllFollowingFromDB = async (
+  userId: string,
   query: Record<string, unknown>,
 ) => {
-  const model = Follower.find({ following: following })
-    .populate('user')
+  console.log(userId)
+  const model = Follower.find({ following: userId })
+    .populate('following')
     .populate('follower')
     .sort('-createdAt')
 
-  const categoryQuery = new QueryBuilder(model, query).sort().paginate()
+  const FollowingQuery = new QueryBuilder(model, query).sort().paginate()
 
-  const meta = await categoryQuery.countTotal()
-  const result = await categoryQuery.modelQuery
+  const meta = await FollowingQuery.countTotal()
+  const result = await FollowingQuery.modelQuery
 
   return {
     meta,
@@ -82,5 +83,5 @@ const getFollowingFromDB = async (
 export const FollowerServices = {
   createFollowerIntoDB,
   deleteFollowerIntoDB,
-  getFollowingFromDB,
+  getAllFollowingFromDB,
 }

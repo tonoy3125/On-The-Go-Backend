@@ -5,13 +5,13 @@ const followerSchema = new Schema<TFollower>(
   {
     following: {
       type: Schema.Types.ObjectId,
-      required: true,
       ref: 'User',
+      required: true,
     },
     follower: {
       type: Schema.Types.ObjectId,
-      required: true,
       ref: 'User',
+      required: true,
     },
   },
   { timestamps: true },

@@ -1,7 +1,13 @@
-import { Types } from 'mongoose'
+import { z } from 'zod'
 
-export type TComment = {
-  post: Types.ObjectId
-  user: Types.ObjectId
-  comment: string
+const createCommentValidationSchema = z.object({
+  body: z.object({
+    user: z.string(),
+    post: z.string(),
+    comment: z.string({ required_error: 'Comment is required' }),
+  }),
+})
+
+export const CommentValidations = {
+  createCommentValidationSchema,
 }

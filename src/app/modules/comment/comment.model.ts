@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { TComment } from './comment.validation'
+import { TComment } from './comment.interface'
 
 const commentSchema = new Schema<TComment>(
   {

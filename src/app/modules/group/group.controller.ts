@@ -15,6 +15,18 @@ const createGroup = catchAsync(async (req, res) => {
   })
 })
 
+const getUsersGroups = catchAsync(async (req, res) => {
+  const userId = req.user!._id
+  const result = await GroupService.getUsersGroupsFromDB(userId, req.query)
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'User Groups Retrieved Successfully',
+    data: result,
+  })
+})
+
 export const GroupControllers = {
   createGroup,
+  getUsersGroups,
 }

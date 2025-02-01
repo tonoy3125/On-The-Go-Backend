@@ -41,6 +41,70 @@ const createGroupIntoDB = async (payload: TGroup, userId: string) => {
   }
 }
 
+const getUsersGroupsFromDB = async (
+  userId: string,
+  query: Record<string, unknown>,
+) => {
+  const page = Number(query.page) || 1
+  const limit = Number(query.limit) || 10
+  const skip = (page - 1) * limit
+
+  const pipeLine = [
+    {
+      $match: {
+        user: userId,
+      },
+    },
+    {
+      $lookup: {
+        from: 'groups',
+        localField: 'group',
+        foreignField: '_id',
+        as: 'group',
+      },
+    },
+  ]
+
+  // Retrieve paginated results
+  const result = await GroupMember.aggregate([
+    ...pipeLine,
+    {
+      $skip: skip,
+    },
+    {
+      $limit: limit,
+    },
+    {
+      $sort: {
+        createdAt: -1,
+      },
+    },
+    {
+      $project: {
+        group: 1,
+      },
+    },
+  ])
+
+  // Modify the result to extract the 'group' array from each document
+  const modifiedResult = result.map((item) => item.group[0])
+
+  // Retrieve total count of documents
+  const totalCountQuery = await GroupMember.aggregate([
+    ...pipeLine,
+    {
+      $count: 'totalCount',
+    },
+  ])
+
+  // Extract totalCount from the result or default to 0 if no documents
+  const totalCount =
+    totalCountQuery.length > 0 ? totalCountQuery[0].totalCount : 0
+
+  return { result: modifiedResult, totalCount }
+}
+
 export const GroupService = {
   createGroupIntoDB,
+  getUsersGroupsFromDB,
 }

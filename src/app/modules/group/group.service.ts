@@ -104,7 +104,89 @@ const getUsersGroupsFromDB = async (
   return { result: modifiedResult, totalCount }
 }
 
+const getGroupSuggestionsFromDB = async (
+  userId: string,
+  query: Record<string, unknown>,
+) => {
+  const page = Number(query.page) || 1
+  const limit = Number(query.limit) || 10
+  const skip = (page - 1) * limit
+  const searchTerm = (query.searchTerm as string)?.trim() // Extract and trim the search term if provided
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const pipeLine: any[] = [
+    {
+      $lookup: {
+        from: 'groupmembers',
+        localField: '_id',
+        foreignField: 'group',
+        as: 'groupMembers',
+      },
+    },
+    {
+      $match: {
+        $expr: {
+          $not: {
+            $in: [new mongoose.Types.ObjectId(userId), '$groupMembers.user'],
+          },
+        },
+      },
+    },
+  ]
+
+  // Add search condition if searchTerm is provided
+  if (searchTerm) {
+    pipeLine.push({
+      $match: {
+        $or: [
+          { name: { $regex: searchTerm, $options: 'i' } }, // Case-insensitive search on name
+          { description: { $regex: searchTerm, $options: 'i' } }, // Case-insensitive search on description
+        ],
+      },
+    })
+  }
+
+  // Fetch the results with sorting, pagination, and projection
+  const result = await Group.aggregate([
+    ...pipeLine,
+    {
+      $sort: {
+        createdAt: -1,
+      },
+    },
+    {
+      $skip: skip,
+    },
+    {
+      $limit: limit,
+    },
+    {
+      $project: {
+        name: 1,
+        description: 1,
+        createdAt: 1,
+        image: 1,
+        privacy: 1,
+        memberCount: 1,
+      },
+    },
+  ])
+
+  // Fetch the total count of documents
+  const totalCountResult = await Group.aggregate([
+    ...pipeLine,
+    {
+      $count: 'totalCount',
+    },
+  ])
+  const totalCount =
+    totalCountResult.length > 0 ? totalCountResult[0].totalCount : 0
+
+  return { result, totalCount }
+}
+
 export const GroupService = {
   createGroupIntoDB,
   getUsersGroupsFromDB,
+  getGroupSuggestionsFromDB,
 }

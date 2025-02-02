@@ -38,8 +38,22 @@ const getGroupSuggestions = catchAsync(async (req, res) => {
   })
 })
 
+const getGroupDetailsById = catchAsync(async (req, res) => {
+  const groupId = req.params.groupId
+  const userId = req.user!._id
+
+  const result = await GroupService.getGroupDetailsByIdFromDB(groupId, userId)
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Group Details Retrieved Successfully',
+    data: result,
+  })
+})
+
 export const GroupControllers = {
   createGroup,
   getUsersGroups,
   getGroupSuggestions,
+  getGroupDetailsById,
 }

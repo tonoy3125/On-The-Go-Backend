@@ -185,8 +185,21 @@ const getGroupSuggestionsFromDB = async (
   return { result, totalCount }
 }
 
+const getGroupDetailsByIdFromDB = async (groupId: string, userId: string) => {
+  const result = await Group.findById(groupId).populate('GroupOwner')
+  const member = await GroupMember.findOne({
+    group: groupId,
+    user: userId,
+  }).populate('user')
+  return {
+    group: result,
+    member,
+  }
+}
+
 export const GroupService = {
   createGroupIntoDB,
   getUsersGroupsFromDB,
   getGroupSuggestionsFromDB,
+  getGroupDetailsByIdFromDB,
 }

@@ -14,4 +14,10 @@ router.get(
   GroupControllers.getGroupSuggestions,
 )
 
+router.get(
+  '/groupDetails/:groupId',
+  auth('admin', 'user'),
+  GroupControllers.getGroupDetailsById,
+)
+
 export const GroupRoutes = router

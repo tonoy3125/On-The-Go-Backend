@@ -20,4 +20,10 @@ router.get(
   GroupControllers.getGroupDetailsById,
 )
 
+router.get(
+  '/groupMember/:groupId',
+  auth('admin', 'user'),
+  GroupControllers.getGroupMembersByGroupId,
+)
+
 export const GroupRoutes = router

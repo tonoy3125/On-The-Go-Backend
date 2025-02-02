@@ -4,6 +4,7 @@ import { TGroup } from './group.interface'
 import { Group } from './group.model'
 import { AppError } from '../../errors/AppError'
 import { GroupMember } from '../groupMember/groupMember.model'
+import QueryBuilder from '../../builder/QueryBuilder'
 
 const createGroupIntoDB = async (payload: TGroup, userId: string) => {
   const session = await mongoose.startSession()
@@ -197,9 +198,47 @@ const getGroupDetailsByIdFromDB = async (groupId: string, userId: string) => {
   }
 }
 
+const getGroupMembersByGroupId = async (
+  groupId: string,
+  userId: string,
+  query: Record<string, unknown>,
+) => {
+  const isGroupExist = await Group.findById(groupId)
+
+  if (!isGroupExist) {
+    throw new AppError(404, 'Group not found')
+  }
+
+  if (isGroupExist.privacy == 'private') {
+    const isMember = await GroupMember.findOne({
+      group: groupId,
+      user: userId,
+    })
+
+    if (!isMember) {
+      throw new AppError(
+        400,
+        'You are not a member of this group and the group is private',
+      )
+    }
+  }
+
+  const model = GroupMember.find({ group: groupId }).populate('user')
+  const groupQuery = new QueryBuilder(model, query).paginate().sort().filter()
+
+  const meta = await groupQuery.countTotal()
+  const result = await groupQuery.modelQuery
+
+  return {
+    meta,
+    result,
+  }
+}
+
 export const GroupService = {
   createGroupIntoDB,
   getUsersGroupsFromDB,
   getGroupSuggestionsFromDB,
   getGroupDetailsByIdFromDB,
+  getGroupMembersByGroupId,
 }

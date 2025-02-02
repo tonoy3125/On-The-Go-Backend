@@ -68,10 +68,27 @@ const getGroupMembersByGroupId = catchAsync(async (req, res) => {
   })
 })
 
+const updateGroupById = catchAsync(async (req, res) => {
+  const groupId = req.params.groupId
+  const userId = req.user!._id
+  const result = await GroupService.updateGroupByIdIntoDB(
+    groupId,
+    userId,
+    req?.body,
+  )
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Group Updated Successfully',
+    data: result,
+  })
+})
+
 export const GroupControllers = {
   createGroup,
   getUsersGroups,
   getGroupSuggestions,
   getGroupDetailsById,
   getGroupMembersByGroupId,
+  updateGroupById,
 }

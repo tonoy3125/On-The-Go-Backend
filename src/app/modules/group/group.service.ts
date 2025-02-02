@@ -235,10 +235,49 @@ const getGroupMembersByGroupId = async (
   }
 }
 
+const updateGroupByIdIntoDB = async (
+  groupId: string,
+  userId: string,
+  payload: Partial<TGroup>,
+) => {
+  const isGroupExist = await Group.findById(groupId)
+  ;['owner', 'memberCount'].forEach((key) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    delete payload[key]
+  })
+
+  if (!isGroupExist) {
+    throw new AppError(404, 'Group not found')
+  }
+
+  const member = await GroupMember.findOne({
+    group: groupId,
+    user: userId,
+  })
+
+  if (!member) {
+    throw new AppError(400, 'You are not allowed to update this group')
+  }
+
+  const validRoles = ['owner', 'admin']
+
+  if (!validRoles.includes(member.role)) {
+    throw new AppError(400, 'You are not allowed to update this group')
+  }
+
+  const result = await Group.findByIdAndUpdate(groupId, payload, {
+    new: true,
+    runValidators: true,
+  })
+  return result
+}
+
 export const GroupService = {
   createGroupIntoDB,
   getUsersGroupsFromDB,
   getGroupSuggestionsFromDB,
   getGroupDetailsByIdFromDB,
   getGroupMembersByGroupId,
+  updateGroupByIdIntoDB,
 }

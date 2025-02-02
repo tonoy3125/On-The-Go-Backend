@@ -26,4 +26,10 @@ router.get(
   GroupControllers.getGroupMembersByGroupId,
 )
 
+router.put(
+  '/updateGroup/:groupId',
+  auth('admin', 'user'),
+  GroupControllers.updateGroupById,
+)
+
 export const GroupRoutes = router

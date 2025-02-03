@@ -44,8 +44,28 @@ const leaveGroup = catchAsync(async (req, res) => {
   })
 })
 
+const checkMembership = catchAsync(async (req, res) => {
+  const userId = req.user!._id
+  const groupId = req.params.groupId
+
+  const isMember = await GroupMemberServices.checkMembershipInDB(
+    userId,
+    groupId,
+  )
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: isMember
+      ? 'User is a member of the group'
+      : 'User is not a member of the group',
+    data: { isMember },
+  })
+})
+
 export const GroupMemberControllers = {
   joinGroup,
   getGroupMembers,
   leaveGroup,
+  checkMembership,
 }

@@ -72,8 +72,18 @@ const leaveGroupIntoDB = async (userId: string, groupId: string) => {
   return result
 }
 
+const checkMembershipInDB = async (userId: string, groupId: string) => {
+  const isMember = await GroupMember.findOne({
+    user: userId,
+    group: groupId,
+  })
+
+  return !!isMember // Returns true if the user is a member, false otherwise
+}
+
 export const GroupMemberServices = {
   joinGroupIntoDB,
   getGroupMembersFromDB,
   leaveGroupIntoDB,
+  checkMembershipInDB,
 }

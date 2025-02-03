@@ -17,6 +17,7 @@ router.post(
 router.post(
   '/upload-image',
   multerUpload.single('file'),
+  auth('admin', 'user'),
   PostControllers.uploadPostImage,
 )
 

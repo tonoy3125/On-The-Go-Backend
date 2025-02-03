@@ -56,11 +56,12 @@ const getGroupMembersFromDB = async (
   }
 }
 
-const leaveGroupIntoDB = async (groupId: string, userId: string) => {
+const leaveGroupIntoDB = async (userId: string, groupId: string) => {
   const isMember = await GroupMember.findOne({
     user: userId,
     group: groupId,
   })
+  console.log(isMember)
   if (!isMember) {
     throw new AppError(400, 'You are not a member of this group')
   }

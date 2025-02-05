@@ -3,6 +3,7 @@ import { AppError } from '../../errors/AppError'
 import { Follower } from '../follower/follower.model'
 import { Post } from '../post/post.model'
 import { userSearchableField } from './user.constant'
+import { TUser } from './user.interface'
 import { User } from './user.model'
 import httpStatus from 'http-status'
 
@@ -78,9 +79,35 @@ const updateUserRoleInDB = async (id: string, newRole: string) => {
   return updatedUser
 }
 
+const updateUserIntoDB = async (id: string, payload: Partial<TUser>) => {
+  // Check if the payload includes the role field
+  if ('role' in payload) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'Updating the role is not allowed',
+    )
+  }
+
+  // Fetch the user by ID
+  const user = await User.findById(id)
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found with this ID')
+  }
+
+  // Update the user's details
+  const updatedUser = await User.findByIdAndUpdate(id, payload, {
+    new: true, // Return the updated document
+    runValidators: true, // Run schema validators
+  })
+
+  return updatedUser
+}
+
 export const UserServices = {
   getAllUserFromDB,
   getSingleUserFromDB,
   getUserProfileDataFromDB,
   updateUserRoleInDB,
+  updateUserIntoDB,
 }

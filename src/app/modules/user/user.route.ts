@@ -17,4 +17,6 @@ router.get(
 
 router.patch('/role/:id', auth(USER_ROLE.admin), UserControllers.updateUserRole)
 
+router.patch('/:id', auth('admin'), UserControllers.updateUser)
+
 export const UserRoutes = router

@@ -9,6 +9,12 @@ router.get('/', auth(USER_ROLE.admin), UserControllers.getAllUser)
 
 router.get('/:id', auth('admin', 'user'), UserControllers.getSingleUser)
 
+router.get(
+  '/profile/:userId',
+  auth('admin', 'user'),
+  UserControllers.getUserProfile,
+)
+
 router.patch('/role/:id', auth(USER_ROLE.admin), UserControllers.updateUserRole)
 
 export const UserRoutes = router

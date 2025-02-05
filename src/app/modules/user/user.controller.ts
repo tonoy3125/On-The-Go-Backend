@@ -26,6 +26,21 @@ const getSingleUser = catchAsync(async (req, res) => {
   })
 })
 
+const getUserProfile = catchAsync(async (req, res) => {
+  const requesterId = req.user!._id // Assuming authenticated user info is in req.user
+  const { userId } = req.params
+  const result = await UserServices.getUserProfileDataFromDB(
+    userId,
+    requesterId,
+  )
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'User profile retrieved successfully!',
+    data: result,
+  })
+})
+
 const updateUserRole = catchAsync(async (req, res) => {
   const { id } = req.params
   const { role: newRole } = req.body
@@ -42,5 +57,6 @@ const updateUserRole = catchAsync(async (req, res) => {
 export const UserControllers = {
   getAllUser,
   getSingleUser,
+  getUserProfile,
   updateUserRole,
 }

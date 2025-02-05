@@ -1,5 +1,7 @@
 import QueryBuilder from '../../builder/QueryBuilder'
 import { AppError } from '../../errors/AppError'
+import { Follower } from '../follower/follower.model'
+import { Post } from '../post/post.model'
 import { userSearchableField } from './user.constant'
 import { User } from './user.model'
 import httpStatus from 'http-status'
@@ -24,6 +26,33 @@ const getAllUserFromDB = async (query: Record<string, unknown>) => {
 const getSingleUserFromDB = async (id: string) => {
   const result = await User.findById(id)
   return result
+}
+
+const getUserProfileDataFromDB = async (
+  userId: string,
+  requesterId: string,
+) => {
+  const profile = await User.findById(userId).select('-auth')
+  if (!profile) throw new AppError(httpStatus.NOT_FOUND, 'User not found')
+
+  const isFollowing = await Follower.findOne({
+    following: userId,
+    follower: requesterId,
+  })
+  // console.log(isFollowing)
+  const totalPost = await Post.countDocuments({
+    user: userId,
+    group: { $exists: false },
+  })
+  const totalFollower = await Follower.countDocuments({ following: userId })
+  // console.log(totalFollower)
+
+  return {
+    ...profile.toObject(),
+    isFollowing: !!isFollowing,
+    totalPost,
+    totalFollower,
+  }
 }
 
 const updateUserRoleInDB = async (id: string, newRole: string) => {
@@ -52,5 +81,6 @@ const updateUserRoleInDB = async (id: string, newRole: string) => {
 export const UserServices = {
   getAllUserFromDB,
   getSingleUserFromDB,
+  getUserProfileDataFromDB,
   updateUserRoleInDB,
 }

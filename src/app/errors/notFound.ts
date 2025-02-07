@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 import { Request, Response } from "express";
 
 const NotFound = (req: Request, res: Response) => {

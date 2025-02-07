@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 import mongoose from "mongoose";
 import config from "./app/config";
 

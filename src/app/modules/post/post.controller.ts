@@ -5,6 +5,7 @@ import { PostServices } from './post.service'
 import { TPost } from './post.interface'
 import { JwtPayload } from 'jsonwebtoken'
 import { TUser } from '../user/user.interface'
+import { Types } from 'mongoose'
 
 export const uploadPostImage = catchAsync(async (req, res) => {
   const file = req.file
@@ -49,14 +50,18 @@ const CreatePost = catchAsync(async (req, res) => {
     return
   }
 
-  const payload = {
+  const payload: TPost = {
     content,
     images,
     categories,
     premium: Boolean(premium),
-    user: userId as string,
+    user: new Types.ObjectId(userId),
     group,
-  } as TPost
+    reactionCount: 0, // Default value
+    upvoteCount: 0, // Default value
+    downvoteCount: 0, // Default value
+    commentCount: 0, // Default value
+  }
 
   const result = await PostServices.createPostIntoDB(payload)
   sendResponse(res, {
@@ -64,6 +69,21 @@ const CreatePost = catchAsync(async (req, res) => {
     statusCode: httpStatus.OK,
     message: 'Post Created Successfully',
     data: result,
+  })
+})
+
+const getUserPost = catchAsync(async (req, res) => {
+  const userId = req.user!._id
+  const result = await PostServices.getUserProfilePostByUserId(
+    userId,
+    req?.query,
+  )
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Category Retrieved successfully!',
+    meta: result.meta,
+    data: result.result,
   })
 })
 
@@ -83,5 +103,6 @@ const deletePost = catchAsync(async (req, res) => {
 export const PostControllers = {
   CreatePost,
   uploadPostImage,
+  getUserPost,
   deletePost,
 }

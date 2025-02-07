@@ -39,6 +39,7 @@ const login = async (payload: TLoginUser) => {
     role: user?.role,
     name: user.name,
     phone: user?.phone,
+    image: user?.image,
   }
 
   const accessToken = createToken(
@@ -78,6 +79,7 @@ const refreshToken = async (token: string) => {
     role: user?.role,
     name: user.name,
     phone: user?.phone,
+    image: user?.image,
   }
 
   const accessToken = createToken(
@@ -109,6 +111,7 @@ const forgetPassword = async (email: string) => {
     role: user?.role,
     name: user.name,
     phone: user?.phone,
+    image: user?.image,
   }
 
   const resetToken = createToken(
@@ -119,7 +122,7 @@ const forgetPassword = async (email: string) => {
 
   const resetUiLink = `${config.reset_pass_ui_link}?email=${user.email}&token=${resetToken}`
   await sendEmail(user.email, resetUiLink)
-  console.log(resetUiLink)
+  // console.log(resetUiLink)
 }
 
 const resetPassword = async (payload: TResetPassword, token: string) => {
@@ -160,6 +163,7 @@ const resetPassword = async (payload: TResetPassword, token: string) => {
       role: user?.role,
       name: user.name,
       phone: user?.phone,
+      image: user?.image,
     }
 
     const accessToken = createToken(

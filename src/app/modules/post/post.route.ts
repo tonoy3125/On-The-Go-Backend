@@ -21,7 +21,11 @@ router.post(
   PostControllers.uploadPostImage,
 )
 
-router.get('/userPost', auth('admin', 'user'), PostControllers.getUserPost)
+router.get(
+  '/userPost/:userId',
+  auth('admin', 'user'),
+  PostControllers.getUserPost,
+)
 
 router.delete('/:id', auth('admin', 'user'), PostControllers.deletePost)
 

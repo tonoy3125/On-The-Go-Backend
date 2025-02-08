@@ -73,7 +73,7 @@ const CreatePost = catchAsync(async (req, res) => {
 })
 
 const getUserPost = catchAsync(async (req, res) => {
-  const userId = req.user!._id
+  const userId = req.params.userId
   const result = await PostServices.getUserProfilePostByUserId(
     userId,
     req?.query,

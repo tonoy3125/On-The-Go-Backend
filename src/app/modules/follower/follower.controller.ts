@@ -4,11 +4,10 @@ import { FollowerServices } from './follower.service'
 import catchAsync from '../../utils/catchAsync'
 
 const createFollower = catchAsync(async (req, res) => {
-  const userId = req.user!._id
-  const { follower } = req.body
+  const { following, follower } = req.body
   const payload = {
-    following: follower,
-    follower: userId,
+    following: following,
+    follower: follower,
   }
   const result = await FollowerServices.createFollowerIntoDB(payload)
   //   send response
@@ -21,11 +20,10 @@ const createFollower = catchAsync(async (req, res) => {
 })
 
 const deleteFollower = catchAsync(async (req, res) => {
-  const userId = req.user!._id
-  const { follower } = req.body
+  const { following, follower } = req.body
   const payload = {
-    following: follower,
-    follower: userId,
+    following: following,
+    follower: follower,
   }
   const result = await FollowerServices.deleteFollowerIntoDB(payload)
   //   send response

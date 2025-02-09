@@ -45,6 +45,8 @@ const getGroupMembersFromDB = async (
   }
 
   const model = GroupMember.find({ group: groupId })
+    .populate('user')
+    .populate('group')
 
   const groupQuery = new QueryBuilder(model, query).sort().paginate().fields()
   const meta = await groupQuery.countTotal()

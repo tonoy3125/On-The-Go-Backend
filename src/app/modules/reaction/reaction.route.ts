@@ -7,7 +7,7 @@ import auth from '../../middlewares/auth'
 const router = express.Router()
 
 router.patch(
-  '/change',
+  '/change/',
   auth('admin', 'user'),
   validateRequest(ReactionValidations.changeReactionValidationSchema),
   ReactionControllers.changeReactionByPostId,

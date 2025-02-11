@@ -33,10 +33,13 @@ const getUserProfilePostByUserId = async (
 
   for (let i = 0; i < postObjs.length; i++) {
     const post = postObjs[i]
+    console.log('This is Post data', post)
+    console.log('This is User Data', userId)
     const reacted = await Reaction.findOne({
       post: post._id as string,
-      user: userId,
+      // user: userId,
     })
+    console.log(reacted)
 
     postObjs[i] = {
       ...post,
@@ -45,6 +48,11 @@ const getUserProfilePostByUserId = async (
   }
 
   return { result: postObjs, meta }
+}
+
+const getPostByIdIntoDB = async (id: string) => {
+  const result = await Post.findById(id).populate('user').populate('categories')
+  return result
 }
 
 const deletePostFromDB = async (id: string, user: TUser) => {
@@ -68,5 +76,6 @@ const deletePostFromDB = async (id: string, user: TUser) => {
 export const PostServices = {
   createPostIntoDB,
   getUserProfilePostByUserId,
+  getPostByIdIntoDB,
   deletePostFromDB,
 }

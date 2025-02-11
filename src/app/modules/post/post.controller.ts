@@ -87,6 +87,17 @@ const getUserPost = catchAsync(async (req, res) => {
   })
 })
 
+const getPostById = catchAsync(async (req, res) => {
+  const { id } = req.params
+  const result = await PostServices.getPostByIdIntoDB(id)
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Post Retrieved Successfully!!!',
+    data: result,
+  })
+})
+
 const deletePost = catchAsync(async (req, res) => {
   const { id } = req.params
   const user = req.user as JwtPayload
@@ -104,5 +115,6 @@ export const PostControllers = {
   CreatePost,
   uploadPostImage,
   getUserPost,
+  getPostById,
   deletePost,
 }

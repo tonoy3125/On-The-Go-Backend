@@ -27,6 +27,8 @@ router.get(
   PostControllers.getUserPost,
 )
 
+router.get('/:id', auth('admin', 'user'), PostControllers.getPostById)
+
 router.delete('/:id', auth('admin', 'user'), PostControllers.deletePost)
 
 export const PostRoutes = router

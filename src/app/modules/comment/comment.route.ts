@@ -13,4 +13,10 @@ router.post(
   CommentControllers.createComment,
 )
 
+router.get(
+  '/:postId',
+  auth('admin', 'user'),
+  CommentControllers.getCommentByPostId,
+)
+
 export const CommentRoutes = router

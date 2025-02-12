@@ -21,4 +21,6 @@ router.get(
 
 router.put('/:id', auth('admin', 'user'), CommentControllers.updateComment)
 
+router.delete('/:id', auth('admin', 'user'), CommentControllers.deleteComment)
+
 export const CommentRoutes = router

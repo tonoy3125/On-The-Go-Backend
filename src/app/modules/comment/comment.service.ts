@@ -73,8 +73,30 @@ const updateCommentIntoDB = async (
   return result
 }
 
+const deleteCommentfromDB = async (id: string, userId: string) => {
+  const comment = await Comment.findById(id)
+  if (!comment) {
+    throw new AppError(404, 'Comment not found')
+  }
+
+  if (comment.user.toString() !== userId.toString()) {
+    throw new AppError(403, 'Unauthorized access')
+  }
+
+  const isPostExists = await Post.findById(comment.post)
+  if (!isPostExists) {
+    throw new AppError(404, 'Post not found')
+  }
+
+  const result = await Comment.findByIdAndDelete(id)
+  isPostExists.commentCount = isPostExists.commentCount - 1
+  await isPostExists.save()
+  return result
+}
+
 export const CommentService = {
   createCommentIntoDB,
   getCommentsByPostIdFromDB,
   updateCommentIntoDB,
+  deleteCommentfromDB,
 }

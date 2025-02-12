@@ -36,7 +36,21 @@ const getCommentByPostId = catchAsync(async (req, res) => {
   })
 })
 
+const updateComment = catchAsync(async (req, res) => {
+  const { id } = req.params
+  const { comment } = req.body
+  const userId = req.user!._id
+  const result = await CommentService.updateCommentIntoDB(id, userId, comment)
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Comment Updated Successfully!!!',
+    data: result,
+  })
+})
+
 export const CommentControllers = {
   createComment,
   getCommentByPostId,
+  updateComment,
 }

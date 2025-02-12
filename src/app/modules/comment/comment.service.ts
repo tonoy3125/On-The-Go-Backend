@@ -27,6 +27,7 @@ const getCommentsByPostIdFromDB = async (
 
   const model = Comment.find({ post: isPostExists._id })
     .populate('user')
+    .populate('post')
     .sort('-createdAt')
 
   const queryModel = new QueryBuilder(model, query).paginate()
@@ -37,7 +38,43 @@ const getCommentsByPostIdFromDB = async (
   return { result, meta }
 }
 
+const updateCommentIntoDB = async (
+  id: string,
+  userId: string,
+  newComment: string,
+) => {
+  const comment = await Comment.findById(id)
+  // console.log('Comment Is', comment)
+  if (!comment) {
+    throw new Error('Comment not found')
+  }
+
+  if (comment.user.toString() !== userId.toString()) {
+    throw new Error('Unauthorized access')
+  }
+
+  const isPostExists = await Post.findById(comment.post)
+  // console.log('is Post exits', isPostExists)
+  if (!isPostExists) {
+    throw new Error('Post not found')
+  }
+
+  const result = await Comment.findByIdAndUpdate(
+    id,
+    {
+      comment: newComment,
+    },
+    {
+      new: true,
+      runValidators: true,
+    },
+  )
+
+  return result
+}
+
 export const CommentService = {
   createCommentIntoDB,
   getCommentsByPostIdFromDB,
+  updateCommentIntoDB,
 }

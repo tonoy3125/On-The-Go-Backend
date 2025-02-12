@@ -19,4 +19,6 @@ router.get(
   CommentControllers.getCommentByPostId,
 )
 
+router.put('/:id', auth('admin', 'user'), CommentControllers.updateComment)
+
 export const CommentRoutes = router

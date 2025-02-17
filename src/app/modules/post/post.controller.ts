@@ -72,6 +72,18 @@ const CreatePost = catchAsync(async (req, res) => {
   })
 })
 
+const getAllPost = catchAsync(async (req, res) => {
+  const user = req.user as TUser
+  const result = await PostServices.getAllPostsFromDB(user, req?.query)
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Category Retrieved successfully!',
+    meta: result.meta,
+    data: result.result,
+  })
+})
+
 const getUserPost = catchAsync(async (req, res) => {
   const userId = req.params.userId
   const result = await PostServices.getUserProfilePostByUserId(
@@ -114,6 +126,7 @@ const deletePost = catchAsync(async (req, res) => {
 export const PostControllers = {
   CreatePost,
   uploadPostImage,
+  getAllPost,
   getUserPost,
   getPostById,
   deletePost,

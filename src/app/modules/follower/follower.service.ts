@@ -64,7 +64,7 @@ const getAllFollowingFromDB = async (
   query: Record<string, unknown>,
 ) => {
   // console.log(userId)
-  const model = Follower.find({ following: userId })
+  const model = Follower.find({ follower: userId })
     .populate('following')
     .populate('follower')
     .sort('-createdAt')
@@ -84,13 +84,16 @@ const getAllFollowerFromDB = async (
   userId: string,
   query: Record<string, unknown>,
 ) => {
-  // console.log(userId)
-  const model = Follower.find({ follower: userId })
+  console.log(userId)
+  const model = Follower.find({ following: userId })
     .populate('following')
     .populate('follower')
     .sort('-createdAt')
 
+    
+
   const FollowingQuery = new QueryBuilder(model, query).sort().paginate()
+  // console.log(FollowingQuery)
 
   const meta = await FollowingQuery.countTotal()
   const result = await FollowingQuery.modelQuery

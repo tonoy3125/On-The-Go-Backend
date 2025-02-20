@@ -8,10 +8,9 @@ import { User } from './user.model'
 import httpStatus from 'http-status'
 
 const getAllUserFromDB = async (query: Record<string, unknown>) => {
-  const userQuery = new QueryBuilder(User.find(), query)
+  const userQuery = new QueryBuilder(User.find().sort({ createdAt: 1 }), query)
     .search(userSearchableField)
     .filter()
-    .sort()
     .paginate()
     .fields()
 

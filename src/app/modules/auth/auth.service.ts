@@ -1,7 +1,7 @@
 import { AppError } from '../../errors/AppError'
 import { TUser } from '../user/user.interface'
 import { User } from '../user/user.model'
-import { TLoginUser, TResetPassword } from './auth.interface'
+import { TChangePassword, TLoginUser, TResetPassword } from './auth.interface'
 import createToken, { verifyToken } from './auth.utils'
 import config from '../../config'
 import httpStatus from 'http-status'
@@ -62,7 +62,65 @@ const login = async (payload: TLoginUser) => {
   }
 }
 
+const changePassword = async (userId: string, payload: TChangePassword) => {
+  // Find the user by ID
+  const user = await User.findById(userId)
 
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User does not exist')
+  }
+
+  // Verify if the old password matches
+  if (!(await User.isPasswordMatch(payload.oldPassword, user.password))) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Current password is incorrect')
+  }
+
+  // Check if the new password matches the confirmation password
+  if (payload?.newPassword !== payload?.confirmNewPassword) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'New passwords and Confirm New Password do not match',
+    )
+  }
+
+  // Check if the new password is the same as the old password
+  if (await User.isPasswordMatch(payload.newPassword, user.password)) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'New password must be different from the current password',
+    )
+  }
+
+  // Hash the new password
+  const newHashedPassword = await bcrypt.hash(
+    payload?.newPassword,
+    Number(config.bcrypt_salt_rounds),
+  )
+
+  // Update the user's password
+  await User.findOneAndUpdate({
+    password: newHashedPassword,
+  })
+  // Generate new tokens after password change (optional)
+  const jwtPayload = {
+    email: user?.email,
+    role: user?.role,
+    name: user?.name,
+    phone: user?.phone,
+    image: user?.image,
+  }
+
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string,
+  )
+
+  return {
+    user,
+    accessToken,
+  }
+}
 
 const refreshToken = async (token: string) => {
   const decoded = verifyToken(token, config.jwt_refresh_secret as string)
@@ -199,6 +257,7 @@ const resetPassword = async (payload: TResetPassword, token: string) => {
 export const AuthServices = {
   signUp,
   login,
+  changePassword,
   refreshToken,
   forgetPassword,
   resetPassword,

@@ -34,6 +34,21 @@ const login = catchAsync(async (req, res) => {
   })
 })
 
+const changePassword = catchAsync(async (req, res) => {
+  const userId = req.user!._id // Assuming req.user contains the authenticated user's data
+  const { ...passwordData } = req.body
+
+  // Call the AuthServices.changePassword method
+  const result = await AuthServices.changePassword(userId, passwordData)
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Password Changed Successfully!!',
+    data: result,
+  })
+})
+
 const refreshToken = catchAsync(async (req, res) => {
   const { refreshToken } = req.cookies
   console.log(refreshToken)
@@ -93,4 +108,5 @@ export const AuthControllers = {
   refreshToken,
   forgetPassword,
   resetPassword,
+  changePassword,
 }

@@ -79,7 +79,7 @@ const changePassword = async (userId: string, payload: TChangePassword) => {
   if (payload?.newPassword !== payload?.confirmNewPassword) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      'New passwords and Confirm New Password do not match',
+      'New password and Confirm New Password do not match',
     )
   }
 
@@ -98,14 +98,24 @@ const changePassword = async (userId: string, payload: TChangePassword) => {
   )
 
   // Update the user's password
-  await User.findOneAndUpdate({
-    password: newHashedPassword,
-  })
+  const updatedUser = await User.findOneAndUpdate(
+    { _id: userId }, // Filter condition
+    { $set: { password: newHashedPassword } }, // Update field
+    { new: true }, // Return the updated user
+  )
+
+  if (!updatedUser) {
+    throw new AppError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'Failed to update password',
+    )
+  }
+
   // Generate new tokens after password change (optional)
   const jwtPayload = {
     email: user?.email,
     role: user?.role,
-    name: user?.name,
+    name: user.name,
     phone: user?.phone,
     image: user?.image,
   }
@@ -117,7 +127,7 @@ const changePassword = async (userId: string, payload: TChangePassword) => {
   )
 
   return {
-    user,
+    user: updatedUser,
     accessToken,
   }
 }

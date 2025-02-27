@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import jwt from 'jsonwebtoken'
-
 import sendResponse from '../../utils/sendResponse'
 import catchAsync from '../../utils/catchAsync'
 import { TPaymentTokenInfo } from './payment.interface'

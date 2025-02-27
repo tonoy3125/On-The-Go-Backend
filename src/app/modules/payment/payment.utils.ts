@@ -6,6 +6,7 @@ export const initiatePayment = async (
   payload: TPaymentPayload,
   userId: string,
 ) => {
+  console.log(userId)
   const { amount, cus_add, cus_name, cus_phone, cus_email, tran_id } = payload
 
   const paymentTokenObj: TPaymentTokenInfo = {
@@ -15,11 +16,12 @@ export const initiatePayment = async (
   }
 
   const PT = jwt.sign(paymentTokenObj, process.env.SIGNATURE_KEY as string, {
-    expiresIn: '1m',
+    expiresIn: '10d',
   })
+  console.log(PT)
 
   //   const url = 'https://onthego-backend.vercel.app/api/v1'
-  const url = 'http://localhost:5000/api/v1'
+  const url = 'http://localhost:5000/api'
 
   const response = await axios.post(`${process.env.PAYMENT_URL}`, {
     store_id: process.env.STORE_ID,

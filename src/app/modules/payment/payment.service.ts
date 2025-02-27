@@ -32,7 +32,7 @@ export const failedPayment = async () => {
   return file
 }
 
-export const paymentService = {
+export const PaymentServices = {
   createPayment,
   failedPayment,
 }

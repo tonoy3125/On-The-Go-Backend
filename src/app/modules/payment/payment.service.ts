@@ -19,14 +19,14 @@ export const createPayment = async (
     isPremium: true,
   })
 
-  const filePath = join(__dirname, '../../templates/success.html')
+  const filePath = join(__dirname, '../templates/success.html')
   let file = readFileSync(filePath, 'utf-8')
   file = file.replace('{{link}}', 'http://localhost:3000/')
 
   return file
 }
 export const failedPayment = async () => {
-  const filePath = join(__dirname, '../../templates/error.html')
+  const filePath = join(__dirname, '../templates/error.html')
   let file = readFileSync(filePath, 'utf-8')
   file = file.replace('{{link}}', 'http://localhost:3000/')
   return file

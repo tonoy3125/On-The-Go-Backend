@@ -64,9 +64,17 @@ const isCapableForPremium = catchAsync(async (req, res) => {
 
 const generateVerifyAccountPaymentUrl = catchAsync(async (req, res) => {
   const user = await User.findById(req.user!._id)
-  console.log('Generate User', user)
+  // console.log('Generate User', user)
+  if (!user) {
+    return sendResponse(res, {
+      message: 'User not found',
+      success: false,
+      data: null,
+      statusCode: 404,
+    })
+  }
   const post = await Post.findOne({
-    user: user,
+    user: user?._id,
     reactionCount: { $gt: 0 },
   })
   if (!post) {

@@ -7,7 +7,7 @@ export type TPaymentPayload = {
   amount: number
   cus_name: string
   cus_email: string
-  cus_phone: string
+  cus_phone: number
   cus_add: string
   tran_id: string
 }

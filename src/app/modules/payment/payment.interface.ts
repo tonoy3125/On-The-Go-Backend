@@ -1,9 +1,9 @@
-export interface IPayment {
+export type TPayment = {
   amount: number
   transactionId: string
   status: string
 }
-export interface IPaymentPayload {
+export type TPaymentPayload = {
   amount: number
   cus_name: string
   cus_email: string
@@ -12,7 +12,7 @@ export interface IPaymentPayload {
   tran_id: string
 }
 
-export interface IPaymentTokenInfo {
+export type TPaymentTokenInfo = {
   transactionId: string
   userId: string
   amount: string

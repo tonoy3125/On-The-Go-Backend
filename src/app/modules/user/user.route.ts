@@ -7,6 +7,11 @@ import { multerUpload } from '../../config/cloudinaryMulter.config'
 const router = express.Router()
 
 router.get('/', auth(USER_ROLE.admin), UserControllers.getAllUser)
+router.get(
+  '/can-have-premium',
+  auth('admin', 'user'),
+  UserControllers.isCapableForPremium,
+)
 
 router.get('/:id', auth('admin', 'user'), UserControllers.getSingleUser)
 

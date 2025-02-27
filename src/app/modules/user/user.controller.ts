@@ -6,6 +6,7 @@ import { UserServices } from './user.service'
 import { User } from './user.model'
 import { AppError } from '../../errors/AppError'
 import { JwtPayload } from 'jsonwebtoken'
+import { Post } from '../post/post.model'
 
 const getAllUser = catchAsync(async (req, res) => {
   const result = await UserServices.getAllUserFromDB(req?.query)
@@ -41,6 +42,21 @@ const getUserProfile = catchAsync(async (req, res) => {
     statusCode: httpStatus.OK,
     message: 'User profile retrieved successfully!',
     data: result,
+  })
+})
+
+const isCapableForPremium = catchAsync(async (req, res) => {
+  const user = req.user!._id
+  console.log('is Capable For Premium', user)
+
+  const post = await Post.findOne({ user: user, reactionCount: { $gt: 0 } })
+  console.log(post)
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'successfully check user capability for premium',
+    data: post ? true : false,
   })
 })
 
@@ -127,5 +143,6 @@ export const UserControllers = {
   getSingleUser,
   getUserProfile,
   updateUserRole,
+  isCapableForPremium,
   updateUser,
 }

@@ -12,6 +12,7 @@ export type TUser = {
   role: TUserRoles
   image?: string
   isPremium: boolean
+  createdAt: string
 }
 
 export interface UserModel extends Model<TUser> {

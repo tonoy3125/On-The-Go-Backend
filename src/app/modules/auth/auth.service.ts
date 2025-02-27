@@ -40,6 +40,7 @@ const login = async (payload: TLoginUser) => {
     name: user.name,
     phone: user?.phone,
     image: user?.image,
+    createdAt: user?.createdAt,
   }
 
   const accessToken = createToken(
@@ -118,6 +119,7 @@ const changePassword = async (userId: string, payload: TChangePassword) => {
     name: user.name,
     phone: user?.phone,
     image: user?.image,
+    createdAt: user?.createdAt,
   }
 
   const accessToken = createToken(
@@ -150,6 +152,7 @@ const refreshToken = async (token: string) => {
     name: user.name,
     phone: user?.phone,
     image: user?.image,
+    createdAt: user?.createdAt,
   }
 
   const accessToken = createToken(
@@ -182,6 +185,7 @@ const forgetPassword = async (email: string) => {
     name: user.name,
     phone: user?.phone,
     image: user?.image,
+    createdAt: user?.createdAt,
   }
 
   const resetToken = createToken(
@@ -234,6 +238,7 @@ const resetPassword = async (payload: TResetPassword, token: string) => {
       name: user.name,
       phone: user?.phone,
       image: user?.image,
+      createdAt: user?.createdAt,
     }
 
     const accessToken = createToken(

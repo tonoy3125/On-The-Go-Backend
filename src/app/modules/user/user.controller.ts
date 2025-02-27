@@ -7,6 +7,8 @@ import { User } from './user.model'
 import { AppError } from '../../errors/AppError'
 import { JwtPayload } from 'jsonwebtoken'
 import { Post } from '../post/post.model'
+import { TPaymentPayload } from '../payment/payment.interface'
+import { initiatePayment } from '../payment/payment.utils'
 
 const getAllUser = catchAsync(async (req, res) => {
   const result = await UserServices.getAllUserFromDB(req?.query)
@@ -47,16 +49,51 @@ const getUserProfile = catchAsync(async (req, res) => {
 
 const isCapableForPremium = catchAsync(async (req, res) => {
   const user = req.user!._id
-  console.log('is Capable For Premium', user)
+  // console.log('is Capable For Premium', user)
 
   const post = await Post.findOne({ user: user, reactionCount: { $gt: 0 } })
-  console.log(post)
+  // console.log(post)
 
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'successfully check user capability for premium',
     data: post ? true : false,
+  })
+})
+
+const generateVerifyAccountPaymentUrl = catchAsync(async (req, res) => {
+  const user = await User.findById(req.user!._id)
+  console.log('Generate User', user)
+  const post = await Post.findOne({
+    user: user,
+    reactionCount: { $gt: 0 },
+  })
+  if (!post) {
+    return sendResponse(res, {
+      message: 'Not capled for premium',
+      success: false,
+      data: null,
+      statusCode: 404,
+    })
+  }
+
+  const payload: TPaymentPayload = {
+    amount: 200,
+    cus_add: 'N/A',
+    cus_name: user.name,
+    cus_phone: user?.phone,
+    cus_email: user.email,
+    tran_id: String(Date.now()),
+  }
+
+  const result = await initiatePayment(payload, user._id)
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Payment initiated Successfully!',
+    data: result,
   })
 })
 
@@ -144,5 +181,6 @@ export const UserControllers = {
   getUserProfile,
   updateUserRole,
   isCapableForPremium,
+  generateVerifyAccountPaymentUrl,
   updateUser,
 }

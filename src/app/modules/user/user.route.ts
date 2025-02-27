@@ -12,6 +12,11 @@ router.get(
   auth('admin', 'user'),
   UserControllers.isCapableForPremium,
 )
+router.post(
+  '/get-verify-url',
+  auth('admin', 'user'),
+  UserControllers.generateVerifyAccountPaymentUrl,
+)
 
 router.get('/:id', auth('admin', 'user'), UserControllers.getSingleUser)
 

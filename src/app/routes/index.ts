@@ -9,6 +9,7 @@ import { ReactionRoutes } from '../modules/reaction/reaction.route'
 import { FollowerRoutes } from '../modules/follower/follower.route'
 import { CommentRoutes } from '../modules/comment/comment.route'
 import { PaymentRoutes } from '../modules/payment/payment.route'
+import { StatisticsRoutes } from '../modules/statistics/statistics.route'
 
 const router = express.Router()
 
@@ -52,6 +53,10 @@ const routerModules = [
   {
     path: '/payment',
     route: PaymentRoutes,
+  },
+  {
+    path: '/statistics',
+    route: StatisticsRoutes,
   },
 ]
 

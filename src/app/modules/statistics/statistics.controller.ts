@@ -31,7 +31,18 @@ const getUserStatistics = catchAsync(async (req, res) => {
   })
 })
 
+const getRecentStatistics = catchAsync(async (req, res) => {
+  const result = await StatisticsServices.getRecentStatistics()
+  sendResponse(res, {
+    data: result,
+    success: true,
+    message: 'Successfully Get Recent Statistics',
+    statusCode: 200,
+  })
+})
+
 export const StatisticsControllers = {
   PaymentStatisticsController,
   getUserStatistics,
+  getRecentStatistics,
 }

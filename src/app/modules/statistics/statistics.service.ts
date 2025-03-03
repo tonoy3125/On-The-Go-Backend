@@ -1,4 +1,5 @@
 import Payment from '../payment/payment.model'
+import { Post } from '../post/post.model'
 import { User } from '../user/user.model'
 
 const getPaymentStatistic = async ({
@@ -66,8 +67,48 @@ const getRecentStatistics = async () => {
   return formattedData
 }
 
+const getTopUsersByPosts = async () => {
+  const topUsers = await Post.aggregate([
+    {
+      $group: {
+        _id: '$user',
+        postCount: { $sum: 1 },
+      },
+    },
+    // Sort users by post count in descending order
+    { $sort: { postCount: -1 } },
+
+    { $limit: 10 },
+
+    {
+      $lookup: {
+        from: 'users',
+        localField: '_id', // _id is the user ID from Post
+        foreignField: '_id', // _id in User collection
+        as: 'userDetails',
+      },
+    },
+    { $unwind: '$userDetails' },
+
+    {
+      $project: {
+        _id: 0,
+        userId: '$_id',
+        postCount: 1,
+        image: '$userDetails.image',
+        firstName: '$userDetails.firstName',
+        lastName: '$userDetails.lastName',
+        email: '$userDetails.email',
+      },
+    },
+  ])
+
+  return topUsers
+}
+
 export const StatisticsServices = {
   getPaymentStatistic,
   getUserStatistics,
   getRecentStatistics,
+  getTopUsersByPosts,
 }

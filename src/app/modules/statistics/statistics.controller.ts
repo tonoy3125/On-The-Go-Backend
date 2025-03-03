@@ -41,8 +41,19 @@ const getRecentStatistics = catchAsync(async (req, res) => {
   })
 })
 
+const getTopUsersByPosts = catchAsync(async (req, res) => {
+  const result = await StatisticsServices.getTopUsersByPosts()
+  sendResponse(res, {
+    data: result,
+    success: true,
+    message: 'Successfully Get Top 10 Users By Posts',
+    statusCode: 200,
+  })
+})
+
 export const StatisticsControllers = {
   PaymentStatisticsController,
   getUserStatistics,
   getRecentStatistics,
+  getTopUsersByPosts,
 }

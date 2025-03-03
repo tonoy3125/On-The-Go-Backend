@@ -10,4 +10,6 @@ router.get(
   StatisticsControllers.PaymentStatisticsController,
 )
 
+router.get('/recent', auth('admin'), StatisticsControllers.getUserStatistics)
+
 export const StatisticsRoutes = router

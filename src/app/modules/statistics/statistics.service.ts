@@ -1,4 +1,5 @@
 import Payment from '../payment/payment.model'
+import { User } from '../user/user.model'
 
 const getPaymentStatistic = async ({
   from,
@@ -27,6 +28,20 @@ const getPaymentStatistic = async ({
   return result
 }
 
-export const statisticsServices = {
+const getUserStatistics = async () => {
+  const premiumUserCount = await User.countDocuments({
+    isPremium: true,
+    role: { $ne: 'admin' },
+  })
+  const normalUserCount = await User.countDocuments({
+    isPremium: false,
+    role: { $ne: 'admin' },
+  })
+
+  return { premiumUserCount, normalUserCount }
+}
+
+export const StatisticsServices = {
   getPaymentStatistic,
+  getUserStatistics,
 }

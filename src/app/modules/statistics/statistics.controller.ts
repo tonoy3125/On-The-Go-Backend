@@ -1,6 +1,6 @@
 import catchAsync from '../../utils/catchAsync'
 import sendResponse from '../../utils/sendResponse'
-import { statisticsServices } from './statistics.service'
+import { StatisticsServices } from './statistics.service'
 
 const PaymentStatisticsController = catchAsync(async (req, res) => {
   const { from, to } = req.query
@@ -12,7 +12,7 @@ const PaymentStatisticsController = catchAsync(async (req, res) => {
     to: toDate,
   }
 
-  const result = await statisticsServices.getPaymentStatistic(payload)
+  const result = await StatisticsServices.getPaymentStatistic(payload)
   sendResponse(res, {
     data: result,
     success: true,
@@ -21,6 +21,17 @@ const PaymentStatisticsController = catchAsync(async (req, res) => {
   })
 })
 
+const getUserStatistics = catchAsync(async (req, res) => {
+  const result = await StatisticsServices.getUserStatistics()
+  sendResponse(res, {
+    data: result,
+    success: true,
+    message: 'Successfully Get User Statistics',
+    statusCode: 200,
+  })
+})
+
 export const StatisticsControllers = {
   PaymentStatisticsController,
+  getUserStatistics,
 }

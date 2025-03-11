@@ -15,8 +15,8 @@ app.use(cookieParser())
 app.use(
   cors({
     origin: [
-      "http://localhost:3000",
-      // 'https://on-the-go-frontend.vercel.app/',
+      // "http://localhost:3000",
+      'https://on-the-go-frontend.vercel.app',
     ],
     credentials: true,
   }),

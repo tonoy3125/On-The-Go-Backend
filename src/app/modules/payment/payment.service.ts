@@ -21,14 +21,14 @@ export const createPayment = async (
 
   const filePath = join(__dirname, '../templates/success.html')
   let file = readFileSync(filePath, 'utf-8')
-  file = file.replace('{{link}}', 'http://localhost:3000/')
+  file = file.replace('{{link}}', 'https://on-the-go-frontend.vercel.app/')
 
   return file
 }
 export const failedPayment = async () => {
   const filePath = join(__dirname, '../templates/error.html')
   let file = readFileSync(filePath, 'utf-8')
-  file = file.replace('{{link}}', 'http://localhost:3000/')
+  file = file.replace('{{link}}', 'https://on-the-go-frontend.vercel.app/')
   return file
 }
 

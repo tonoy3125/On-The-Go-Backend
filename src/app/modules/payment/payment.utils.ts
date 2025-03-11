@@ -20,8 +20,8 @@ export const initiatePayment = async (
   })
   console.log(PT)
 
-  //   const url = 'https://onthego-backend.vercel.app/api/v1'
-  const url = 'http://localhost:5000/api'
+  const url = 'https://on-the-go-backend.vercel.app/api'
+  // const url = 'http://localhost:5000/api'
 
   const response = await axios.post(`${process.env.PAYMENT_URL}`, {
     store_id: process.env.STORE_ID,

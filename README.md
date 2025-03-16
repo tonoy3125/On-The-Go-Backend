@@ -122,14 +122,14 @@ npm run start:dev
   - `GET /api/group/groupMember/:groupId`: Get Group Member by group id (Accessible only to authenticated users)
   - `PUT /api/group/updateGroup/:groupId`: Update Group by group id (Accessible only to authenticated users)
 
-  - **Group Member Routes:**
+- **Group Member Routes:**
 
   - `POST /api/group-member/join-group/:groupId`: Join Group By Group Id (Accessible only to authenticated users).
   - `GET /api/group/:groupId`: Get Group Member by group id (Accessible only to authenticated users)
   - `POST /api/group/leave-group/:groupId`: Leave Group By Group Id (Accessible only to authenticated users)
   - `GET /api/group/check-membership/:groupId`: Check Group Membership By Group Id (Accessible only to authenticated users)
 
-  - **Post Routes:**
+- **Post Routes:**
 
   - `POST /api/post`: Create a Post (Accessible only to authenticated users).
   - `GET /api/post/userPost/:userId`: Get User Post by user id (Accessible only to authenticated users)

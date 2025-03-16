@@ -19,6 +19,12 @@ router.post(
   AuthControllers.login,
 )
 
+router.get(
+  '/auth-state',
+  auth('admin', 'user'),
+  AuthControllers.authStateController,
+)
+
 router.post(
   '/change-password',
   auth('admin', 'user'),

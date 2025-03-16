@@ -4,6 +4,8 @@ import sendResponse from '../../utils/sendResponse'
 import { AuthServices } from './auth.service'
 import config from '../../config'
 import { TResetPasswordResult } from './auth.interface'
+import { JwtPayload } from 'jsonwebtoken'
+import { User } from '../user/user.model'
 
 const signUp = catchAsync(async (req, res) => {
   const result = await AuthServices.signUp(req.body)
@@ -31,6 +33,20 @@ const login = catchAsync(async (req, res) => {
     message: 'User logged in successfuly',
     accessToken,
     data: user,
+  })
+})
+
+const authStateController = catchAsync(async (req, res) => {
+  const auth = req.user as JwtPayload
+  // console.log(auth)
+
+  const data = await User.findOne({ email: auth.email })
+  const result = data ? data.toObject() : {}
+  res.json({
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'User State Get Successfully!!!',
+    data: { ...result, role: auth.role },
   })
 })
 
@@ -105,6 +121,7 @@ const resetPassword = catchAsync(async (req, res) => {
 export const AuthControllers = {
   signUp,
   login,
+  authStateController,
   refreshToken,
   forgetPassword,
   resetPassword,
